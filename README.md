@@ -1,8 +1,6 @@
 # CS361-Encryption-Decryption
 A microservice using ZeroMQ to communicate with a main program and provide text encryption and decryption services.
 
-# TODO for team
--Add reading from output.txt
 
 # Instructions
 Before using this microservice, the user will want to remember the useages of the text files given to you.
