@@ -20,13 +20,25 @@ def encrypt(rawTxt):
     # log_n = 4 for our current case
     
     # split rawTxt into 4 char blocks
+    # base case for recursion
+    if len(rawTxt) < 4:
+        textChunk = rawTxt[:len(rawTxt)]
+        #encoding
+        #encryption
+        rawTxt = ""
+
+    textChunk = rawTxt[:4]
+    #encoding
+    #encryption
 
     # take each block into numerical (ASCII based)
 
     # take each num to eth power based on n, then mod n
 
     # return raw text or write into file
-    print("This is filler")
+    #this recalls the function
+    rawTxt = rawTxt[4:]
+    encrypt(rawTxt)
 
 #This function will decrypt the text using a key
 def decrypt(rawTxt):
