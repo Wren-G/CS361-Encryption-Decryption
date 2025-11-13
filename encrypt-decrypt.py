@@ -2,47 +2,99 @@
 
 #libraries
 import time
+import math
 
 
 #Global variables
 charType = ''
 publicKeys = {
     # add in a set of (n, e) keys here (ex. these are small n!)
-    4460543: 3791
+    # 4460543: 3791
+    444446005879: 679
 }
 privateKeys = {
     # add in a set of (n, d) keys here (ex. for small n)
-    4460543: 2351
+    # 4460543: 2351
+    444446005879: 1309115239
 }
 
 #This function will encrypt the text
 def encrypt(rawTxt):
-    # log_n = 4 for our current case
+    # establish lists
+    chunkList = []
+    encrypted_chunks = []
+
+    # divide text into smaller chunks (a list of)
+    while rawTxt:
+        rawTxt, new = chunkText(rawTxt)
+        chunkList.append(new)
+
+    # encode chunks, then RSA encrypt them
+    for chunk in chunkList:
+        this_chunk = encode(chunk)
+
+        # x^e mod n
+        this_encrypted_chunk = this_chunk ** publicKeys[444446005879] % 444446005879
+
+        # add to list
+        encrypted_chunks.append(this_encrypted_chunk)
     
-    # split rawTxt into 4 char blocks
-    # base case for recursion
-    if len(rawTxt) < 4:
-        textChunk = rawTxt[:len(rawTxt)]
-        #encoding
-        #encryption
-        rawTxt = ""
-
-    textChunk = rawTxt[:4]
-    #encoding
-    #encryption
-
-    # take each block into numerical (ASCII based)
-
-    # take each num to eth power based on n, then mod n
-
-    # return raw text or write into file
-    #this recalls the function
-    rawTxt = rawTxt[4:]
-    encrypt(rawTxt)
+    # now we have a list of RSA encrypted chunks as a list of integers
+    # TODO convert to str, append to file
+    return encrypted_chunks
 
 #This function will decrypt the text using a key
 def decrypt(rawTxt):
+    # take to dth power mod n
+    # call decode
+    # return text or append to file.
     print("This is filler")
+
+def chunkText(rawTxt):
+    # split rawTxt into blocks of size 4
+    # base case for recursion
+    if len(rawTxt) < 4:
+        textChunk = rawTxt[:len(rawTxt)]
+        rawTxt = ""
+
+    textChunk = rawTxt[:4]
+    
+    rawTxt = rawTxt[4:]
+
+    return rawTxt, textChunk
+
+# This function encodes 4 character blocks into a number.
+def encode(chars):
+    # use ord() to convert to ascii.
+    for i in range(1, 4):
+        ord(chars[i]) # ord is an integer
+    
+    output = 0
+    # implement division algorithm
+    for i in range(0, 3):
+        new = chars[i] * (128 ** i)
+        output += new
+    
+    return output
+
+# This function reverses the encoding process into characters
+def decode(n):
+    # implement division algorithm reversed
+    chars = []
+    for i in range(1, 4):
+        new = n % 128
+        chars.append(new)
+        n = n // 128
+    
+    # use chr() to convert to characters
+    for i in range(0, 3):
+        chr(chars[i]) # returns a string
+    my_string = ''
+
+    for i in chars:
+        my_string += i
+
+    return my_string
 
 def main():
     while (True): #This loops reads the txt file once per second
