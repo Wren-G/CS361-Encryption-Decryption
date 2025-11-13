@@ -6,10 +6,26 @@ import time
 
 #Global variables
 charType = ''
-
+publicKeys = {
+    # add in a set of (n, e) keys here (ex. these are small n!)
+    4460543: 3791
+}
+privateKeys = {
+    # add in a set of (n, d) keys here (ex. for small n)
+    4460543: 2351
+}
 
 #This function will encrypt the text
 def encrypt(rawTxt):
+    # log_n = 4 for our current case
+    
+    # split rawTxt into 4 char blocks
+
+    # take each block into numerical (ASCII based)
+
+    # take each num to eth power based on n, then mod n
+
+    # return raw text or write into file
     print("This is filler")
 
 #This function will decrypt the text using a key
