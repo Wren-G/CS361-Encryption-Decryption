@@ -38,9 +38,16 @@ def encrypt(rawTxt):
 
         # add to list
         encrypted_chunks.append(this_encrypted_chunk)
+
+    to_write = []
+    for chunk in encrypted_chunks:
+        to_write.append(str(chunk))
     
     # now we have a list of RSA encrypted chunks as a list of integers
     # TODO convert to str, append to file
+    with open('output.txt', 'a') as f:
+        for i in to_write:
+            f.write(i + ' ')
     return encrypted_chunks
 
 #This function will decrypt the text using a key
@@ -48,7 +55,7 @@ def decrypt(rawTxt):
     # take to dth power mod n
     # call decode
     # return text or append to file.
-    print("This is filler")
+    print("decrypt filler")
 
 def chunkText(rawTxt):
     # split rawTxt into blocks of size 4
@@ -65,14 +72,16 @@ def chunkText(rawTxt):
 
 # This function encodes 4 character blocks into a number.
 def encode(chars):
+    ints = []
     # use ord() to convert to ascii.
     for i in range(1, 4):
-        ord(chars[i]) # ord is an integer
+        new = ord(chars[i]) # ord is an integer
+        ints.append(new)
     
     output = 0
     # implement division algorithm
     for i in range(0, 3):
-        new = chars[i] * (128 ** i)
+        new = ints[i] * (128 ** i)
         output += new
     
     return output
@@ -124,3 +133,6 @@ def main():
             print("Error: Main program sent unrecognized first character.")
 
         time.sleep(1)
+
+if __name__ == "__main__":
+    main()
