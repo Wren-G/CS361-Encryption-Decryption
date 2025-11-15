@@ -2,8 +2,6 @@
 
 #libraries
 import time
-import math
-
 
 #Global variables
 charType = ''
@@ -21,7 +19,7 @@ privateKeys = {
 #This function will encrypt the text
 def encrypt(rawTxt):
     # establish lists
-    print('Encrypting...')
+    # print('Encrypting...')
     chunkList = []
     encrypted_chunks = []
 
@@ -35,29 +33,26 @@ def encrypt(rawTxt):
         this_chunk = encode(chunk)
 
         # x^e mod n
-        this_encrypted_chunk = this_chunk ** publicKeys[444446005879] % 444446005879
+        # this_encrypted_chunk = this_chunk ** publicKeys[444446005879] % 444446005879
+        this_encrypted_chunk = pow(this_chunk, publicKeys[444446005879], 444446005879)
 
         # add to list
         encrypted_chunks.append(this_encrypted_chunk)
 
-    to_write = []
+    to_write = ''
     for chunk in encrypted_chunks:
-        to_write.append(str(chunk))
+        to_write += (str(chunk))
+        to_write += ' '
     
-    # now we have a list of RSA encrypted chunks as a list of integers
-    # TODO convert to str, append to file
     with open('output.txt', 'a') as f:
-        for i in to_write:
-            f.write(i + ' ')
-    return encrypted_chunks
+        f.write(to_write)
+    return to_write
 
 #This function will decrypt the text using a key
 def decrypt(rawTxt):
     # divide the string from file into numbers
-    print('Decrypting...')
+    # 'Decrypting...')
     strs = rawTxt.split()
-    # print(rawTxt)
-    print(strs)
     nums = []
     for str in strs:
         num = int(str)
@@ -66,14 +61,14 @@ def decrypt(rawTxt):
     text = ''
     for num in nums:
         # decrypt based on d mod n
-        new = num ** privateKeys[444446005879] % 444446005879
+        # new = num ** publicKeys[444446005879] % 444446005879
+        new = pow(num, privateKeys[444446005879], 444446005879)
         partial = decode(new) # returns a partial string
         text += partial
 
     # return text and append to file.
-    with open('output.txt', 'a') as f:
-        f.write(text)
-
+    #with open('output.txt', 'a') as f:
+        #f.write(text)
     return text
 
 # Helper function to split string into correct block sizes
@@ -119,15 +114,13 @@ def decode(n):
         n = n // 128
     
     # use chr() to convert to characters
-    for i in range(0, 3):
-        chr(chars[i]) # returns a string
-    
-    # concatenate all elements together
     my_string = ''
-    for i in chars:
-        my_string += i
+    for num in chars:
+        char_for_str = chr(num) # returns a string
+        # concatenate all elements together
+        my_string += char_for_str
     
-    print(my_string)
+    # print(my_string)
     return my_string
 
 def main():
