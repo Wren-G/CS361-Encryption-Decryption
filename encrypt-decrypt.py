@@ -91,13 +91,13 @@ def chunkText(rawTxt):
 def encode(chars):
     ints = []
     # use ord() to convert to ascii.
-    for i in range(1, 4):
+    for i in range(0, 4):
         new = ord(chars[i]) # ord is an integer
         ints.append(new)
     
     output = 0
     # implement division algorithm
-    for i in range(0, 3):
+    for i in range(0, 4):
         new = ints[i] * (128 ** i)
         output += new
     
@@ -108,7 +108,7 @@ def encode(chars):
 def decode(n):
     # implement division algorithm reversed
     chars = []
-    for i in range(1, 4):
+    for i in range(1, 5):
         new = n % 128
         chars.append(new)
         n = n // 128
