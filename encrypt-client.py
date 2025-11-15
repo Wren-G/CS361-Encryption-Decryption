@@ -10,6 +10,8 @@ try:
     with open("input.txt", "r") as f:
         stringEntry = f.read()
 except FileNotFoundError:
+    stringEntry = ""
+if not stringEntry:
     # ask the user only if the file does not exist
     stringEntry = input("Enter text to be encrypted: ")
 
@@ -32,12 +34,14 @@ except FileNotFoundError:
 # For Decryption: again prefer `input.txt`, otherwise prompt user
 stringEntry = ""
 try:
-    with open("input.txt", "r") as f:
+    with open("output.txt", "r") as f:
         stringEntry = f.read()
 except FileNotFoundError:
+    stringEntry = ""
+if not stringEntry:
     stringEntry = input("Enter text to be decrypted: ")
 
-stringEntry = 'd' + newString
+stringEntry = 'd' + stringEntry
 with open("input.txt", "w") as f:
     f.write(stringEntry)
 
