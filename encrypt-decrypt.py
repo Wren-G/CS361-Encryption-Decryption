@@ -21,6 +21,7 @@ privateKeys = {
 #This function will encrypt the text
 def encrypt(rawTxt):
     # establish lists
+    print('Encrypting...')
     chunkList = []
     encrypted_chunks = []
 
@@ -53,7 +54,15 @@ def encrypt(rawTxt):
 #This function will decrypt the text using a key
 def decrypt(rawTxt):
     # divide the string from file into numbers
-    nums = int(rawTxt.split())
+    print('Decrypting...')
+    strs = rawTxt.split()
+    # print(rawTxt)
+    print(strs)
+    nums = []
+    for str in strs:
+        num = int(str)
+        nums.append(num)
+
     text = ''
     for num in nums:
         # decrypt based on d mod n
@@ -117,11 +126,12 @@ def decode(n):
     my_string = ''
     for i in chars:
         my_string += i
-
+    
+    print(my_string)
     return my_string
 
 def main():
-    while (True): #This loops reads the txt file once per second
+    while True: #This loops reads the txt file once per second
         #sleep while waiting for input.txt
         with open("input.txt", "r") as f: 
             rawTxt = f.read() #rawTxt is just a variable holding the text!
