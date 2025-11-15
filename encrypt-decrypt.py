@@ -52,22 +52,35 @@ def encrypt(rawTxt):
 
 #This function will decrypt the text using a key
 def decrypt(rawTxt):
-    # take to dth power mod n
-    # call decode
-    # return text or append to file.
-    print("decrypt filler")
+    # divide the string from file into numbers
+    nums = int(rawTxt.split())
+    text = ''
+    for num in nums:
+        # decrypt based on d mod n
+        new = num ** privateKeys[444446005879] % 444446005879
+        partial = decode(new) # returns a partial string
+        text += partial
 
+    # return text and append to file.
+    with open('output.txt', 'a') as f:
+        f.write(text)
+
+    return text
+
+# Helper function to split string into correct block sizes
 def chunkText(rawTxt):
-    # split rawTxt into blocks of size 4
     # base case for recursion
     if len(rawTxt) < 4:
         textChunk = rawTxt[:len(rawTxt)]
         rawTxt = ""
 
+    # take first 4 chars
     textChunk = rawTxt[:4]
     
+    # remove those chars from rawTxt
     rawTxt = rawTxt[4:]
 
+    # return both cases (we call this function recursively)
     return rawTxt, textChunk
 
 # This function encodes 4 character blocks into a number.
@@ -84,6 +97,7 @@ def encode(chars):
         new = ints[i] * (128 ** i)
         output += new
     
+    # return ascii ints
     return output
 
 # This function reverses the encoding process into characters
@@ -98,8 +112,9 @@ def decode(n):
     # use chr() to convert to characters
     for i in range(0, 3):
         chr(chars[i]) # returns a string
+    
+    # concatenate all elements together
     my_string = ''
-
     for i in chars:
         my_string += i
 
