@@ -4,10 +4,10 @@ import time
 
 # Microservice 3: Encryption
 
-# Prepare input: prefer `entry.txt` if present, otherwise ask the user
+# Prepare input: prefer `input.txt` if present, otherwise ask the user
 stringEntry = ""
 try:
-    with open("entry.txt", "r") as f:
+    with open("input.txt", "r") as f:
         stringEntry = f.read()
 except FileNotFoundError:
     # ask the user only if the file does not exist
@@ -29,15 +29,15 @@ try:
 except FileNotFoundError:
     print("Encrypted: (no output.txt found yet)")
 
-# For Decryption: again prefer `entry.txt`, otherwise prompt user
+# For Decryption: again prefer `input.txt`, otherwise prompt user
 stringEntry = ""
 try:
-    with open("entry.txt", "r") as f:
+    with open("input.txt", "r") as f:
         stringEntry = f.read()
 except FileNotFoundError:
     stringEntry = input("Enter text to be decrypted: ")
 
-stringEntry = 'd' + stringEntry
+stringEntry = 'd' + newString
 with open("input.txt", "w") as f:
     f.write(stringEntry)
 
