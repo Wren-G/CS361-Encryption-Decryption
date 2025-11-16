@@ -18,7 +18,10 @@ Two files are to prevent the microservice from getting caught in a loop, instead
 
 Your main program should write to input.txt, then read from output.txt
 
-# Example Call in Main Program
+# Example Call in Main Program (Python)
+At the top of your program with your libraries make sure you have:
+import time
+
 This example code uses 'entry.txt' as a text file the main program reads into a string variable 'stringEntry'. It can be used with just strings, not reading from files too.
 For Encryption:
 with open("entry.txt", "r") as f: 
@@ -50,11 +53,33 @@ with open("input.txt", "w") as f:
 
 
 Now example for taking the output is as simple as:
-    with open("output.txt", "r") as f: 
-            newstring = f.read()
+with open("output.txt", "r") as f: 
+    newstring = f.read()
 
+Reccomended:
+One of two methods, either a long sleep to wait for the logic:
+import time
+
+time.sleep(5)
+with open("output.txt", "r") as f: 
+    newstring = f.read()
+
+OR, a loop with one second intervals to wait for the contents to come back
+import time
+
+while (true):
+with open("output.txt", "r") as f: 
+    newstring = f.read()
+if (newstring):
+    break
+else:
+    time.sleep(1)
 
 # Error Messages
 
  # Error: Main program sent unrecognized first character.
  Main program did not append either the character 'e', or the character 'd', to the front of the text file. 
+
+
+# UML Sequence Diagram
+

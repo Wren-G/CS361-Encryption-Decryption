@@ -44,7 +44,7 @@ def encrypt(rawTxt):
         to_write += (str(chunk))
         to_write += ' '
     
-    with open('output.txt', 'a') as f:
+    with open('output.txt', 'w') as f:
         f.write(to_write)
     return to_write
 
@@ -69,7 +69,7 @@ def decrypt(rawTxt):
 
     # return text and append to file.
     with open('output.txt', 'a') as f:
-        f.write(text)
+        f.write(new_text)
     return new_text
 
 # Helper function to split string into correct block sizes
