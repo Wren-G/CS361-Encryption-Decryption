@@ -82,4 +82,4 @@ else:
 
 
 # UML Sequence Diagram
-
+<img width="1235" height="719" alt="Encrypt-Decrypt_1" src="https://github.com/user-attachments/assets/e8ed24f0-5f7e-488d-8ed9-605f38c54605" />
