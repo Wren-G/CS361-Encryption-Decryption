@@ -20,12 +20,13 @@ privateKeys = {
 def encrypt(rawTxt):
     # establish lists
     # print('Encrypting...')
+    
     chunkList = []
     encrypted_chunks = []
 
     # divide text into smaller chunks (a list of)
     while rawTxt:
-        rawTxt, new = chunkText(rawTxt)
+        new, rawTxt = chunkText(rawTxt)
         chunkList.append(new)
 
     # encode chunks, then RSA encrypt them
@@ -33,7 +34,6 @@ def encrypt(rawTxt):
         this_chunk = encode(chunk)
 
         # x^e mod n
-        # this_encrypted_chunk = this_chunk ** publicKeys[444446005879] % 444446005879
         this_encrypted_chunk = pow(this_chunk, publicKeys[444446005879], 444446005879)
 
         # add to list
@@ -51,7 +51,6 @@ def encrypt(rawTxt):
 #This function will decrypt the text using a key
 def decrypt(rawTxt):
     # divide the string from file into numbers
-    # 'Decrypting...')
     strs = rawTxt.split()
     nums = []
     for str in strs:
@@ -61,40 +60,55 @@ def decrypt(rawTxt):
     text = ''
     for num in nums:
         # decrypt based on d mod n
-        # new = num ** publicKeys[444446005879] % 444446005879
         new = pow(num, privateKeys[444446005879], 444446005879)
         partial = decode(new) # returns a partial string
         text += partial
+    
+    # eliminate whitespace if necessary
+    new_text = text.rstrip()
 
     # return text and append to file.
-    #with open('output.txt', 'a') as f:
-        #f.write(text)
-    return text
+    with open('output.txt', 'a') as f:
+        f.write(text)
+    return new_text
 
 # Helper function to split string into correct block sizes
 def chunkText(rawTxt):
     # base case for recursion
     if len(rawTxt) < 4:
-        textChunk = rawTxt[:len(rawTxt)]
+        textChunk = rawTxt
+        to_add = 4 - len(textChunk)
+        for i in range(1, to_add):
+            textChunk += ' '    
         rawTxt = ""
 
     # take first 4 chars
-    textChunk = rawTxt[:4]
-    
-    # remove those chars from rawTxt
-    rawTxt = rawTxt[4:]
+    else:
+        textChunk = rawTxt[:4]
+        # remove those chars from rawTxt
+        rawTxt = rawTxt[4:]
 
     # return both cases (we call this function recursively)
-    return rawTxt, textChunk
+    return textChunk, rawTxt
 
 # This function encodes 4 character blocks into a number.
 def encode(chars):
     ints = []
-    # use ord() to convert to ascii.
-    for i in range(0, 4):
-        new = ord(chars[i]) # ord is an integer
-        ints.append(new)
-    
+    # use ord() to convert to ascii
+    if len(chars) < 4:
+        for i in range(0, len(chars) - 1):
+            new = ord(chars[i])
+            ints.append(new)
+        
+        space = ord(' ')
+        while len(ints) != 4:
+            ints.append(space)
+    else:
+    # use ord() to convert to ascii
+        for i in range(0, 4):
+            new = ord(chars[i]) # ord is an integer
+            ints.append(new)
+        
     output = 0
     # implement division algorithm
     for i in range(0, 4):
