@@ -2,6 +2,7 @@
 
 #libraries
 import time
+import os
 
 #Global variables
 charType = ''
@@ -17,7 +18,7 @@ privateKeys = {
 }
 
 #This function will encrypt the text
-def encrypt(rawTxt):
+def encrypt(rawTxt, outputPath):
     # establish lists
     # print('Encrypting...')
     
@@ -44,12 +45,12 @@ def encrypt(rawTxt):
         to_write += (str(chunk))
         to_write += ' '
     
-    with open('output.txt', 'w') as f:
+    with open(outputPath, 'w') as f:
         f.write(to_write)
     return to_write
 
 #This function will decrypt the text using a key
-def decrypt(rawTxt):
+def decrypt(rawTxt, outputPath):
     # divide the string from file into numbers
     strs = rawTxt.split()
     nums = []
@@ -68,7 +69,7 @@ def decrypt(rawTxt):
     new_text = text.rstrip()
 
     # return text and append to file.
-    with open('output.txt', 'a') as f:
+    with open(outputPath, 'w') as f:
         f.write(new_text)
     return new_text
 
@@ -138,9 +139,12 @@ def decode(n):
     return my_string
 
 def main():
+    baseDir = os.path.dirname(os.path.abspath(__file__))
+    inputPath = os.path.join(baseDir, "input.txt")
+    outputPath = os.path.join(baseDir, "output.txt")
     while True: #This loops reads the txt file once per second
         #sleep while waiting for input.txt
-        with open("input.txt", "r") as f: 
+        with open(inputPath, "r") as f: 
             rawTxt = f.read() #rawTxt is just a variable holding the text!
         
         if not rawTxt: #if nothing was read...
@@ -153,14 +157,14 @@ def main():
         #remove the first character from the text file
         rawTxt = rawTxt[1:] #this just leaves the rest of the string minus that first char
 
-        with open("input.txt", "w") as f:
+        with open(inputPath, "w") as f:
             f.write("") #this erases the input text so that the program does not get confused
             #Don't worry! we already saved the important information in rawTxt
 
         if (charType == 'e'): #first char e = encryption mode
-            encrypt(rawTxt)
+            encrypt(rawTxt, outputPath)
         elif (charType == 'd'): #first char d = decryption mode
-            decrypt(rawTxt)
+            decrypt(rawTxt, outputPath)
         else:
             print("Error: Main program sent unrecognized first character.")
 
