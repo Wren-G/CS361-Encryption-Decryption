@@ -6,57 +6,56 @@ import os
 
 #Global variables
 charType = ''
+
+# public encryption keys (n, e)
 publicKeys = {
-    # add in a set of (n, e) keys here (ex. these are small n!)
-    # 4460543: 3791
     444446005879: 679
 }
+
+# private encryption keys (n, d)
 privateKeys = {
-    # add in a set of (n, d) keys here (ex. for small n)
-    # 4460543: 2351
     444446005879: 1309115239
 }
 
-#This function will encrypt the text
+# Encrypts text based on (n, e)
 def encrypt(rawTxt, outputPath):
-    # establish lists
-    # print('Encrypting...')
-    
+    # establish lists 
     chunkList = []
-    encrypted_chunks = []
+    # encrypted_chunks = []
+    toWrite = ''
 
-    # divide text into smaller chunks (a list of)
+    # divide text into a list of smaller chunks
     while rawTxt:
         new, rawTxt = chunkText(rawTxt)
         chunkList.append(new)
 
-    # encode chunks, then RSA encrypt them
+    # encode chunks, then encrypt them (RSA based)
     for chunk in chunkList:
-        this_chunk = encode(chunk)
+        thisChunk = encode(chunk)
 
         # x^e mod n
-        this_encrypted_chunk = pow(this_chunk, publicKeys[444446005879], 444446005879)
+        thisEncryptedChunk = pow(thisChunk, publicKeys[444446005879], 444446005879)
 
-        # add to list
-        encrypted_chunks.append(this_encrypted_chunk)
-
-    to_write = ''
-    for chunk in encrypted_chunks:
-        to_write += (str(chunk))
-        to_write += ' '
+        toWrite += (str(thisEncryptedChunk))
+        toWrite += ' '
+        
+        # encrypted_chunks.append(this_encrypted_chunk)
     
     with open(outputPath, 'w') as f:
-        f.write(to_write)
-    return to_write
+        f.write(toWrite)
+    return toWrite
 
-#This function will decrypt the text using a key
+# Decrypts text based on (n, d)
 def decrypt(rawTxt, outputPath):
     # divide the string from file into numbers
     strs = rawTxt.split()
     nums = []
     for str in strs:
-        num = int(str)
-        nums.append(num)
+        try:
+            num = int(str)
+            nums.append(num)
+        except ValueError:
+            print('error in decryption')
 
     text = ''
     for num in nums:
@@ -73,15 +72,18 @@ def decrypt(rawTxt, outputPath):
         f.write(new_text)
     return new_text
 
-# Helper function to split string into correct block sizes
+# Helper function for encryption: split string into correct block sizes
 def chunkText(rawTxt):
-    # base case for recursion
+    # base case for recursion (rawTxt almost empty)
     if len(rawTxt) < 4:
         textChunk = rawTxt
-        to_add = 4 - len(textChunk)
-        for i in range(1, to_add):
+        toAdd = 4 - len(textChunk)
+
+        # if we don't have a 4-block, make it a 4-block
+        for i in range(1, toAdd):
             textChunk += ' '    
-        rawTxt = ""
+        
+        rawTxt = "" # erase rawTxt
 
     # take first 4 chars
     else:
@@ -95,8 +97,8 @@ def chunkText(rawTxt):
 # This function encodes 4 character blocks into a number.
 def encode(chars):
     ints = []
-    # use ord() to convert to ascii
     if len(chars) < 4:
+        # if we don't have a 4-block, make it a 4-block with spaces
         for i in range(0, len(chars) - 1):
             new = ord(chars[i])
             ints.append(new)
@@ -104,6 +106,7 @@ def encode(chars):
         space = ord(' ')
         while len(ints) != 4:
             ints.append(space)
+    
     else:
     # use ord() to convert to ascii
         for i in range(0, 4):
@@ -111,7 +114,7 @@ def encode(chars):
             ints.append(new)
         
     output = 0
-    # implement division algorithm
+    # reverses division algorithm
     for i in range(0, 4):
         new = ints[i] * (128 ** i)
         output += new
@@ -120,51 +123,56 @@ def encode(chars):
     return output
 
 # This function reverses the encoding process into characters
-def decode(n):
-    # implement division algorithm reversed
+def decode(num):
+    # division algorithm
     chars = []
     for i in range(1, 5):
-        new = n % 128
+        new = num % 128 # mod out remainder
         chars.append(new)
-        n = n // 128
+        num = num // 128 # floor div to get next num
     
     # use chr() to convert to characters
-    my_string = ''
+    myString = ''
     for num in chars:
-        char_for_str = chr(num) # returns a string
+        charForStr = chr(num) # returns a string
         # concatenate all elements together
-        my_string += char_for_str
+        myString += charForStr
     
-    # print(my_string)
-    return my_string
+    return myString
 
 def main():
+    # handles file path issues
     baseDir = os.path.dirname(os.path.abspath(__file__))
     inputPath = os.path.join(baseDir, "input.txt")
     outputPath = os.path.join(baseDir, "output.txt")
-    while True: #This loops reads the txt file once per second
+
+    while True: 
         #sleep while waiting for input.txt
         with open(inputPath, "r") as f: 
-            rawTxt = f.read() #rawTxt is just a variable holding the text!
+            # get data from file
+            rawTxt = f.read() 
         
-        if not rawTxt: #if nothing was read...
-            time.sleep(1) #sleeps for one second
-            continue #start over
+        # if we do not read, loop
+        if not rawTxt: 
+            time.sleep(1) 
+            continue 
 
-        #once input.txt has text in it,
-        #take the first char off the file and store in charType
+        # first char determines encryption vs. decryption
         charType = rawTxt[0]
-        #remove the first character from the text file
-        rawTxt = rawTxt[1:] #this just leaves the rest of the string minus that first char
+        # remove the first character from the body of text
+        rawTxt = rawTxt[1:] 
 
         with open(inputPath, "w") as f:
-            f.write("") #this erases the input text so that the program does not get confused
-            #Don't worry! we already saved the important information in rawTxt
+            f.write("") # erases the input text
 
-        if (charType == 'e'): #first char e = encryption mode
+        if (charType == 'e'): # first char e = encryption mode
+            print('encrypting...')
             encrypt(rawTxt, outputPath)
-        elif (charType == 'd'): #first char d = decryption mode
+        
+        elif (charType == 'd'): # first char d = decryption mode
+            print('decrypting...')
             decrypt(rawTxt, outputPath)
+        
         else:
             print("Error: Main program sent unrecognized first character.")
 
