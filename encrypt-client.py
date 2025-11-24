@@ -1,4 +1,8 @@
+# Milestone 2 test file
+# Group 42 - The Dream Team
 import time
+
+# Microservice 3: Encryption
 
 # Prepare input: prefer `input.txt` if present, otherwise ask the user
 stringEntry = ""
@@ -16,10 +20,10 @@ stringEntry = 'e' + stringEntry
 with open("input.txt", "w") as f:
     f.write(stringEntry)
 
-# sleep to wait
+#sleep to wait
 time.sleep(2)
 
-# Reading encrypted output (safe: handle missing `output.txt`)
+# Reading output (safe: handle missing `output.txt`)
 try:
     with open("output.txt", "r") as f:
         newString = f.read()
@@ -41,10 +45,10 @@ stringEntry = 'd' + stringEntry
 with open("input.txt", "w") as f:
     f.write(stringEntry)
 
-# sleep to wait
+#sleep to wait
 time.sleep(2)
 
-# Reading decrypted output (safe)
+# Reading output (safe)
 try:
     with open("output.txt", "r") as f:
         newString = f.read()
