@@ -2,7 +2,7 @@ import time
 
 
 # ENCRYPTION
-def encryption_input():
+def encryptionInput():
     # prefer `input.txt` if present, otherwise ask the user
     stringEntry = ""
     try:
@@ -10,23 +10,23 @@ def encryption_input():
             stringEntry = f.read()
     except FileNotFoundError:
         stringEntry = ""
+
     if not stringEntry:
-        # ask the user only if the file does not exist
         stringEntry = input("Enter text to be encrypted: ")
+
     return stringEntry
 
 
-def encryption_request(stringEntry):
-    # For Encryption: prefix with 'e' and send to `input.txt`
+def encryptionRequest(stringEntry):
+    # For Encryption: prefix with "e" and send to `input.txt`
     stringEntry = "e" + stringEntry
     with open("input.txt", "w") as f:
         f.write(stringEntry)
-    # sleep to wait
+
     time.sleep(2)
 
 
-def read_encryption_output():
-    # (safe: handle missing `output.txt`)
+def readEncryptionOutput():
     try:
         with open("output.txt", "r") as f:
             newString = f.read()
@@ -36,28 +36,29 @@ def read_encryption_output():
 
 
 # DECRYPTION
-def decryption_input():
-    # For Decryption: again prefer `input.txt`, otherwise prompt user
+def decryptionInput():
     stringEntry = ""
     try:
         with open("output.txt", "r") as f:
             stringEntry = f.read()
     except FileNotFoundError:
         stringEntry = ""
+
     if not stringEntry:
         stringEntry = input("Enter text to be decrypted: ")
+
     return stringEntry
 
 
-def decryption_request(stringEntry):
+def decryptionRequest(stringEntry):
     stringEntry = "d" + stringEntry
     with open("input.txt", "w") as f:
         f.write(stringEntry)
-    # sleep to wait
+
     time.sleep(2)
 
 
-def decryption_output():
+def decryptionOutput():
     try:
         with open("output.txt", "r") as f:
             newString = f.read()
@@ -68,12 +69,14 @@ def decryption_output():
 
 # MAIN
 def main():
-    text = encryption_input()
-    encryption_request(text)
-    read_encryption_output()
-    text = decryption_input()
-    decryption_request(text)
-    decryption_output()
+    text = encryptionInput()
+    encryptionRequest(text)
+    readEncryptionOutput()
+
+    text = decryptionInput()
+    decryptionRequest(text)
+    decryptionOutput()
+
 
 if __name__ == "__main__":
     main()
